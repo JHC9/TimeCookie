@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+   
+<head>
+  <link rel = "stylesheet" type = "text/css" href = "https://replit.com/@JinhongChen1/Savetheworld('static',filename = 'style.css')">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!--    <script src="script.js"></script>  -->
+   <meta charset= "utf-8" />
+    <title>Timetable</title>
+  
+    <style>
+        /* Style the table */
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            table-layout: fixed;
+        }
+        
+        /* Style the table header */
+        th {
+            border: 1px solid black;
+            text-align: center;
+            padding: 5px;
+            font-weight: normal;
+            background-color: skyblue;
+        }
+        
+        /* Style the table cells */
+        td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 5px;
+            vertical-align: top;
+            height: 80px;
+        }
+        
+        /* Style the first column */
+        .time-column {
+            font-weight: bold;
+            background-color: hotpink;
+        }
+        
+        /* Style the gridlines */
+        tr:nth-child(2n+1) td {
+            border-top: 2px solid black;
+        }
+        
+        td:nth-child(2n+1) {
+            border-right: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Timetable</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Mon</th>
+                <th>Tues</th>
+                <th>Wed</th>
+                <th>Thurs</th>
+                <th>Fri</th>
+                <th>Sat</th>
+                <th>Sun</th>
+            </tr>
+        </thead>
+        <tbody>
+          <form id="timetable-form"  action= "save_timetable" method="post">
+            {% for i in range(7,24) %}
+            <tr>
+                <td class="time-column">{{ i }}:00</td>
+                <td><input type="text" id="mon-{{ i }}" name="mon-{{ i }} " style="width: 50%;"></td>
+                <td><input type="text" id="tue-{{ i }}" name="tue-{{ i }}" style="width: 50%;"></td>
+                <td><input type="text" id="wed-{{ i }}" name="wed-{{ i }}" style="width: 50%;"></td>
+                <td><input type="text" id="thu-{{ i }}" name="thu-{{ i }}" style="width: 50%;"></td>
+                <td><input type="text" id="fri-{{ i }}" name="fri-{{ i }}" style="width: 50%;"></td>
+                <td><input type="text" id="sat-{{ i }}" name="sat-{{ i }}" style="width: 50%;"></td>
+                <td><input type="text" id="sun-{{ i }}" name="sun-{{ i }}" style="width: 50%;"></td>
+            </tr>
+            {% endfor %}
+            <button type="submit" >Save Timetable</button>
+            
+          </form>
+<!--           <button onclick="saveTimetable()" >Save Timetable</button> -->
+        </tbody>
+    </table>
+</body>
+</html>
+<script>
+function saveTimetable() {
+  var form = document.getElementById("timetable-form");
+  var formData = new FormData(form);
+  var inputs = form.getElementsByTagName("input");
+
+  for (var i = 0; i < inputs.length; i++) {
+    console.log(inputs[i].name + ": " + inputs[i].value);
+  }
+
+  $.ajax({
+    type: "POST",
+    url: "/save_timetable",
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(response) {
+       console.log("Response:", formData);
+      // Handle the response from the server-side script here
+    },
+    error: function(xhr, status, error) {
+      console.error("Error:", error);
+    // get the timetable data from the form
+    // var data = {
+    //     'mon': $('#monday').val(),
+    //     'tues': $('#tuesday').val(),
+    //     'wed': $('#wednesday').val(),
+    //     'thurs': $('#thursday').val(),
+    //     'fri': $('#friday').val(),
+    //     'sat':$('#saturday').val(),
+    //     'sun':$('#sunday').val()
+    // };
+
+    // // send an AJAX request to the server to save the data
+    // $.ajax({
+    //     type: 'POST',
+    //     url: '/save',
+    //     data: {'timetable': JSON.stringify(data)},
+    //     success: function(response) {
+    //         // show a success message
+    //         alert('Timetable saved successfully!');
+    //     },
+    //     error: function(response) {
+    //         // show an error message
+    //         alert('An error occurred while saving the timetable!');
+        }
+    });
+}
+</script>

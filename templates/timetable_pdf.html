@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Timetable PDF</title>
+    <style>
+        /* Style the table */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
+        
+        /* Style the table header */
+        th {
+            border: 1px solid black;
+            text-align: center;
+            padding: 5px;
+            font-weight: normal;
+            background-color: #f2f2f
+        }
+    </style>
+  <body>
+    <h1>Timetable</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Mon</th>
+                <th>Tues</th>
+                <th>Wed</th>
+                <th>Thurs</th>
+                <th>Fri</th>
+                <th>Sat</th>
+                <th>Sun</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tbody>
+        {% for row in data1 %}
+          {% for i in row %}
+          
+          
+          <tr>
+            <td>{{ row[i] }}</td>
+          {% endfor %}
+          
+          </tr>
+        {% endfor %}
+      </tbody>
+</head>
+</html>
+      

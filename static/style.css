@@ -1,0 +1,28 @@
+body {
+  color: teal;
+  background-color: orange
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid black;
+}
+
+th {
+    background-color: #9c5e5e;
+}
+
+.timetable-cell {
+    background-color: #7f75cc;
+    cursor: pointer;
+}
+
+.timetable-cell:hover {
+    background-color: #ff0000;
+}
