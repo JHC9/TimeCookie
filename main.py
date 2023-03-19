@@ -1,13 +1,11 @@
 from flask import Flask, render_template, request, make_response, jsonify
 
-
 import json
 #import pandas as pd
 app = Flask(__name__)
 
 
-
-@app.route("/save_timetable", methods=["GET","POST"])
+@app.route("/save_timetable", methods=["GET", "POST"])
 def save_timetable():
   mainlist = []
   l1 = []
@@ -19,19 +17,18 @@ def save_timetable():
   l7 = []
   row = []
 
-  if request.method=="POST":
+  if request.method == "POST":
     data = request.form
-  print(data)
-  
-  for i in range(7,24):
-    row.append(str(i)+':00')
-    l1.append(data.get('mon-'+str(i)+' '))
-    l2.append(data.get('tue-'+str(i)))
-    l3.append(data.get('wed-'+str(i)))
-    l4.append(data.get('thu-'+str(i)))
-    l5.append(data.get('fri-'+str(i)))
-    l6.append(data.get('sat-'+str(i)))
-    l7.append(data.get('sun-'+str(i)))
+
+  for i in range(7, 24):
+    row.append(str(i) + ':00')
+    l1.append(data.get('mon-' + str(i) + ' '))
+    l2.append(data.get('tue-' + str(i)))
+    l3.append(data.get('wed-' + str(i)))
+    l4.append(data.get('thu-' + str(i)))
+    l5.append(data.get('fri-' + str(i)))
+    l6.append(data.get('sat-' + str(i)))
+    l7.append(data.get('sun-' + str(i)))
 
   mainlist.append(list(l1))
   mainlist.append(list(l2))
@@ -43,23 +40,17 @@ def save_timetable():
 
   for item in mainlist:
     for x in range(len(item)):
-      if item[x] =='':
+      if item[x] == '':
         item[x] = "NA"
   
-  
-  #df = pd.DataFrame(data, columns =column, index=row
-  
-  
-  print(json.dumps(mainlist))
-  
+
+  rendered_template = render_template('redirect.html')
+
   # Save the data to a database or a file here
-  response = make_response(jsonify({'status': 'success'}))
+  response = make_response(rendered_template)
   response.set_cookie('timetable', json.dumps(mainlist))
+  return response
   
-  return render_template('redirect.html')
-
-
-
 
 
 # # define a route to render the homepage
@@ -70,21 +61,21 @@ def index():
   timetable = json.loads(timetable_cookie) if timetable_cookie else None
   return render_template('index.html', timetable=timetable)
 
+
 @app.route('/read-cookie')
 def read_cookie():
+
+  cookie_data = request.cookies.get('timetable')
   
-    cookie_data = request.cookies.get('timetable')
-    print(cookie_data)
-    data1=None
-    if cookie_data is None:
-      print('No cookie found.')
-        
-        
-    else:
-      data1 = json.loads(cookie_data)
-        
-      return render_template('timetable_pdf.html',data1 = data1)
+
+  if cookie_data is None:
+    print('No cookie found.')
+
+  else:
+    data1 = json.loads(cookie_data)
+
+    return render_template('timetable_pdf.html', data1=data1)
 
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=8080, debug=True) 
+  app.run(host='0.0.0.0', port=8080, debug=True)
