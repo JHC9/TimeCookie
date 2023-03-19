@@ -1,52 +1,75 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Timetable PDF</title>
     <style>
-        /* Style the table */
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            table-layout: fixed;
-        }
-        
-        /* Style the table header */
-        th {
-            border: 1px solid black;
-            text-align: center;
-            padding: 5px;
-            font-weight: normal;
-            background-color: #f2f2f
-        }
+      /* Style the table */
+      table {
+        border-collapse: collapse;
+        width: 75%;
+      }
+      
+      /* Style the table header */
+      th {
+        border: 1px solid black;
+        text-align: center;
+        padding: 5px;
+        font-weight: bold;
+        background-color: #f2f2f2;
+      }
+      
+      /* Style the table cells */
+      td {
+        border: 1px solid black;
+        text-align: center;
+        padding: 5px;
+        vertical-align: top;
+        height: 80px;
+      }
+      
+      /* Style the first column */
+      .time-column {
+        font-weight: bold;
+        background-color: palegoldenrod;
+      }
+      
+      /* Style the gridlines */
+      tr:nth-child(2n+1) td {
+        border-top: 2px solid black;
+      }
+      
+      td:nth-child(2n+1) {
+        border-right: 2px solid black;
+      }
     </style>
+  </head>
+  
   <body>
     <h1>Timetable</h1>
     <table>
-        <thead>
-            <tr>
-                <th>Time</th>
-                <th>Mon</th>
-                <th>Tues</th>
-                <th>Wed</th>
-                <th>Thurs</th>
-                <th>Fri</th>
-                <th>Sat</th>
-                <th>Sun</th>
-            </tr>
-        </thead>
-        <tbody>
-        <tbody>
-        {% for row in data1 %}
-          {% for i in row %}
-          
-          
-          <tr>
-            <td>{{ row[i] }}</td>
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Mon</th>
+          <th>Tues</th>
+          <th>Wed</th>
+          <th>Thurs</th>
+          <th>Fri</th>
+          <th>Sat</th>
+          <th>Sun</th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        {% for i in range(7,24) %}
+        <tr>
+          <td class="time-column">{{ i }}:00</td>
+          {% for day_data in data1 %}
+          <td>{{ day_data[i-7] }}</td>
           {% endfor %}
-          
-          </tr>
+        </tr>
         {% endfor %}
       </tbody>
-</head>
+    </table>
+  </body>
 </html>
-      

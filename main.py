@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, make_response, jsonify
-from werkzeug.datastructures import ImmutableMultiDict
+
 
 import json
 #import pandas as pd
@@ -18,20 +18,20 @@ def save_timetable():
   l6 = []
   l7 = []
   row = []
-  column = ['Monday',"Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+
   if request.method=="POST":
     data = request.form
   print(data)
   
   for i in range(7,24):
     row.append(str(i)+':00')
-    l1.append(data.getlist('mon-'+str(i)))
-    l2.append(data.getlist('tues-'+str(i)))
-    l3.append(data.getlist('wed-'+str(i)))
-    l4.append(data.getlist('thurs-'+str(i)))
-    l5.append(data.getlist('fri-'+str(i)))
-    l6.append(data.getlist('sat-'+str(i)))
-    l7.append(data.getlist('sun-'+str(i)))
+    l1.append(data.get('mon-'+str(i)+' '))
+    l2.append(data.get('tue-'+str(i)))
+    l3.append(data.get('wed-'+str(i)))
+    l4.append(data.get('thu-'+str(i)))
+    l5.append(data.get('fri-'+str(i)))
+    l6.append(data.get('sat-'+str(i)))
+    l7.append(data.get('sun-'+str(i)))
 
   mainlist.append(list(l1))
   mainlist.append(list(l2))
@@ -41,33 +41,22 @@ def save_timetable():
   mainlist.append(list(l6))
   mainlist.append(list(l7))
 
-  x = data.get('mon-7 ')
-  print(x)
-  print(True)
-  
-  #df = pd.DataFrame(data, columns =column, index=row)
-
-  
-    
-      
-  
-
+  for item in mainlist:
+    for x in range(len(item)):
+      if item[x] =='':
+        item[x] = "NA"
   
   
-  # replace empty values with NaN
-  #df = df.replace('', pd.NA)
+  #df = pd.DataFrame(data, columns =column, index=row
   
-  # display the resulting table
-  #print(df)
   
-
-    
+  print(json.dumps(mainlist))
+  
   # Save the data to a database or a file here
   response = make_response(jsonify({'status': 'success'}))
   response.set_cookie('timetable', json.dumps(mainlist))
-  return response
-
-
+  
+  return render_template('redirect.html')
 
 
 
@@ -83,14 +72,18 @@ def index():
 
 @app.route('/read-cookie')
 def read_cookie():
+  
     cookie_data = request.cookies.get('timetable')
     print(cookie_data)
-    if cookie_data is not None:
-        data1 = json.loads(cookie_data)
+    data1=None
+    if cookie_data is None:
+      print('No cookie found.')
+        
         
     else:
-        print('No cookie found.')
-    return render_template('timetable_pdf.html',data1 = data1)
+      data1 = json.loads(cookie_data)
+        
+      return render_template('timetable_pdf.html',data1 = data1)
 
 
 if __name__ == '__main__':
