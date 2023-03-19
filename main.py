@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, make_response, jsonify
+from werkzeug.datastructures import ImmutableMultiDict
+
 import json
 #import pandas as pd
 app = Flask(__name__)
@@ -39,7 +41,8 @@ def save_timetable():
   mainlist.append(list(l6))
   mainlist.append(list(l7))
 
-  print(data.keys(('mon-'+str(i))))
+  x = data.get('mon-7 ')
+  print(x)
   print(True)
   
   #df = pd.DataFrame(data, columns =column, index=row)
